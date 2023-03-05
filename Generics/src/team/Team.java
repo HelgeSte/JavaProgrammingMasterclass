@@ -3,7 +3,7 @@ package team;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 
-public class Team<T extends Player> { // How do we limit it to subclasses?
+public class Team<T extends Player> implements Comparable<Team<T>> { // How do we limit it to subclasses?
 // public class Team<T extends Player & Coach & Manager> { = This is how you would use multiple bounds. The last two
 // would have to be interfaces.
     private String name;
@@ -60,5 +60,10 @@ public class Team<T extends Player> { // How do we limit it to subclasses?
 
     public int ranking(){
         return (won * 2) + tied;
+    }
+
+    @Override
+    public int compareTo(Team<T> o) {
+        return o.ranking() - this.ranking();
     }
 }

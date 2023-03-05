@@ -1,6 +1,7 @@
 package team;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,9 +29,20 @@ public class Main {
         Team<FootballPlayer> hawthorne = new Team<>("Hawthorne");
         Team<FootballPlayer> freemantle = new Team("Freemantle");
 
-        hawthorne.matchResult(freemantle, 1,0);
+        hawthorne.matchResult(freemantle, 1,1);
         hawthorne.matchResult(adelaideCrows, 3, 8);
 
         adelaideCrows.matchResult(freemantle, 2, 1);
+        adelaideCrows.matchResult(hawthorne, 5, 5);
+        melbourne.matchResult(adelaideCrows, 2, 0);
+
+        ArrayList<Team<FootballPlayer>> footballTeams = new ArrayList<>();
+        footballTeams.add(melbourne);
+        footballTeams.add(freemantle);
+        footballTeams.add(hawthorne);
+        System.out.println("\nStandings:");
+        footballTeams.stream()
+                .sorted()
+                .forEach(t -> System.out.println(t.getName() + ": " + t.ranking()));
     }
 }

@@ -3,14 +3,16 @@ package team;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 
-public class Team {
+public class Team<T extends Player> { // How do we limit it to subclasses?
+// public class Team<T extends Player & Coach & Manager> { = This is how you would use multiple bounds. The last two
+// would have to be interfaces.
     private String name;
     private int played;
     private int won;
     private int lost;
     private int tied;
 
-    private ArrayList<Player> members = new ArrayList<>();
+    private ArrayList<T> members = new ArrayList<>();
 
     public Team(String name){
         this.name = name;
@@ -20,7 +22,7 @@ public class Team {
         return name;
     }
 
-    public boolean addPlayer(Player player) {
+    public boolean addPlayer(T player) {
         if(members.contains(player)){
             System.out.println(player.getName() + " is already on this team");
             return false;
@@ -35,16 +37,24 @@ public class Team {
         return this.members.size();
     }
 
-    public void matchResult(Team opponent, int ourScore, int theirScore){
-        if(ourScore > theirScore)
+    public void matchResult(Team<T> opponent, int ourScore, int theirScore){ // Generic to avoid matches between different sports
+        String message;
+        if(ourScore > theirScore) {
             won++;
-        else if(ourScore == theirScore)
+            message = " beat ";
+        }
+        else if(ourScore == theirScore) {
             tied++;
-        else
+            message = " drew with ";
+        }
+        else {
             lost++;
+            message = " lost to ";
+        }
         played++;
-        if(opponent != null){
-            opponent.matchResult(null, theirScore, ourScore);
+        if(opponent != null) {
+            System.out.println(this.getName() + message + opponent.getName());
+            opponent.matchResult(null, theirScore, ourScore);   // null => avoid infinite loop
         }
     }
 
